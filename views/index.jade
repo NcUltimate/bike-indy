@@ -1,5 +1,38 @@
-extends layout
-
-block content
-  h1= title
-  p Welcome to #{title}
+doctype html
+html.
+	<head>
+		<meta charset="UTF-8"/>
+		<link rel="stylesheet" type="text/css" href="/stylesheets/style.css"/>
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq0rYM7CdDmbBfHgrGT5_1kUwBPjnYlQU"></script>
+		<script src="/javascripts/bikeshare.js"></script>
+	</head>
+	<body>
+		<div id="main-content">
+			<div id="navbar" class="white-box">
+				<span id="logo" class="nav-button">
+					<img src="/images/logo.jpg" width="55" height="55"/>
+				</span>
+				<span id="map-view" class="nav-button active"> Map </span>	
+				<span id="station-view" class="nav-button"> Stations </span>
+			</div>
+			<div id="map-pane">
+				<div id="map-container">
+					<div id="map" class="white-box section"></div>
+				</div>
+			</div>
+			<div id="station-pane">
+				<div id='station-container'>
+				</div>
+			</div>
+			<div id="button-pane" class="white-box section">
+				<span id="nearest" class="footer-button">
+					<p class="glyphicon">☈</p>
+				</span>
+				<span id="timer" class="footer-button">
+					<p class="glyphicon">30:00</p>
+					<p class='msg-text'>Tap to start</p>
+				</span>
+			</div>
+		</div>
+	</body>
