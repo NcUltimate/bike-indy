@@ -1,5 +1,6 @@
 body {
 	font-family: sans-serif;
+	overflow: hidden;
 	background: #ddd;
 	width: auto;
 }
@@ -9,20 +10,16 @@ body {
 	box-shadow: 1px 1px 2px #ccc;
 	padding: 15px;
 }
-.section {
-	margin: 20px;
-	text-align: center;
-}
 .footer-button {
 	display: inline-block;
-	padding: 10px;
-	width: 40%;
+	padding: 10px 0px;
+	width: 33%;
+	height: 30px;
 	vertical-align: middle;
-	border-radius: 5px;
-	margin: 5px 0px;
+	/*border-radius: 5px;*/
+	/*margin: 5px 0px;*/
 	cursor: pointer;
 	border-right: 1px solid #eee;
-	transition: all 0.1s;
 }
 .footer-button:last-of-type {
 	border: none;
@@ -43,10 +40,13 @@ body {
 }
 #nearest .glyphicon {
 	font-size: 65px;
-	margin-top: -10px;
+}
+#search .glyphicon {
+	font-size: 50px;
 }
 #timer {
 	position: relative;
+	text-align: center;
 }
 #timer .glyphicon {
 	font-size: 36px;
@@ -61,7 +61,7 @@ body {
 	top: 28px;
 }
 .footer-button.ui-selecting {
-	background: gray;
+	background: #ccc;
 }
 .footer-button.ui-selecting .glyphicon {
 	color: white;
@@ -87,7 +87,7 @@ body {
 }
 .nav-button {
 	display: inline-block;
-	width: 33%;
+	width: 24%;
 	height: 39px;
 	text-align: center;
 	font-family: sans-serif;
@@ -95,7 +95,6 @@ body {
 	border-right: 1px solid #eee;
 	color: #555;
 	line-height: 30px;
-	margin-left: -5px;
 	transition: all 0.2s;
 	vertical-align: top;
 }
@@ -104,19 +103,18 @@ body {
 	margin-left: 5px;
 }
 #navbar .nav-button:first-of-type {
-	margin-left:-15px;
 	text-align: left;
 }
 .nav-button:last-of-type {
 	border:none;
 }
-.nav-button:nth-of-type(1).active {
+.nav-button:nth-of-type(2).active {
 	border-bottom: 3px solid blue;
 }
-.nav-button:nth-of-type(2).active {
+.nav-button:nth-of-type(3).active {
 	border-bottom: 3px solid red;
 }
-.nav-button:nth-of-type(3).active {
+.nav-button:nth-of-type(4).active {
 	border-bottom: 3px solid orange;
 }
 
@@ -198,4 +196,63 @@ body {
 .station-address {
 	color: #666;
 	font-size: 12px;
+}
+/******************* SEARCH PANE ************************/
+#search-container {
+	display: none;
+	position: fixed;
+	left: 0px;
+	bottom: 50px;
+	padding: 5px;
+}
+#search-bar {
+	width: 75%;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	font-size: 14px;
+}
+#search-button {
+	width: 15%;
+	text-align: center;
+	font-size: 30px;
+	vertical-align: middle;
+	color: #333;
+	display: inline-block;
+}
+#search-button.ui-selecting {
+	background: #ccc;
+	color: white;
+}
+/******************** ABOUT PANE **********************/
+#about-pane {
+	display: none;
+}
+#about-container {
+	text-align: center;
+	overflow: scroll;
+	height: 100%;
+	position: fixed;
+	left: 0px;
+	top: 0px;
+}
+ol.about-rules-list {
+	font-size: 16px;
+	text-align: left;
+	margin-top: -10px;
+}
+ol.about-rules-list:last-of-type {
+	margin-bottom: 65px;
+}
+li.about-rule {
+	margin-left: 35px;
+	font-size: 12px;
+	padding: 5px;
+}
+#about-pane img {
+	border: 1px solid white;
+	width: 100%;
+}
+img#pricing-img {
+	margin-top: 75px;
 }

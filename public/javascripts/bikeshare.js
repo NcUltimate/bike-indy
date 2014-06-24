@@ -1,44 +1,85 @@
 var stations = [];
-var map = null;
+var map;
 var timer_active = false;
 var notify_times = [9,4,0,-1];
 var time_mins = 30;
 var time_secs = 0;
 var states = ['start', 'stop', 'reset'];
-var snd = null;
-var ticker = null;
+var snd = snd = new Audio('/images/time_up.mp3');
+var ticker;
 var state = 0;
+
+var search_active = false;
+var directionsDisplay;
+var directionsService = new google.maps.DirectionsService()
 
 $(function() {
 	var ops = { center: new google.maps.LatLng(39.770565,-86.159272), zoom: 14, mapTypeControl: false};
 	map = new google.maps.Map(document.getElementById("map"), ops);
+	directionsDisplay = new google.maps.DirectionsRenderer()
+	directionsDisplay.setMap(map);
 	load_stations();
 	add_station_markers(map);
 	list_all_stations();
 	
-	$('.footer-button').on('mousedown', function() {
+	$('.footer-button, #search-button').on('mousedown', function() {
 		$(this).addClass('ui-selecting');
 	});
 	$('body').on('mouseup', function() {
 		$('.ui-selecting').removeClass('ui-selecting');
 	});
 	
-	$('.nav-button').click(function(event) {
+	$('.nav-button:not(.nav-button:first-of-type)').click(function(event) {
 		$('.active').removeClass('active');
 		$(this).addClass('active');
 	});
 	$('#map-view').click(function() {
+		$('#about-pane').css('display','none');
 		$('#station-pane').css('display','none');
 		$('#map-pane').css('display','block');
 	});
 	$('#station-view').click(function() {
+		$('#about-pane').css('display','none');
 		$('#map-pane').css('display','none');
 		$('#station-pane').css('display','block');
 	});
+	$('#about-view').click(function() {
+		$('#map-pane').css('display','none');
+		$('#station-pane').css('display','none');
+		$('#about-pane').css('display','block');
+	});
+	$('#nearest').click(function(event) {
+		if(navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function(position) {
+				var lat = position.coords.latitude;
+				var lng = position.coords.longitude;
+				find_nearest(new google.maps.LatLng(lat, lng).toString());
+			});
+		}
+		else
+			alert('Please click \'allow\' when the page prompts for your location to use that feature.');
+	});
+	$('#search').click(function(event) {
+		if(search_active) {
+			$('#search-container').slideUp(300);
+		}
+		else {
+			$('#search-container').slideDown(300);
+		}
+		search_active = !search_active;
+	})
+	
+	$('#search-button').click(function() {
+		var query = $('#search-bar').val();
+		if(query.trim() == '') return;
+
+		find_nearest(query);	    	
+		$('#search').click();
+	});
 
 	$(window).on('resize', function() {
-			scale_to_screen();
-			google.maps.event.trigger(map, 'resize');
+		scale_to_screen();
+		google.maps.event.trigger(map, 'resize');
 	});
 	scale_to_screen();
 
@@ -62,7 +103,52 @@ $(function() {
 
 });
 
-function sound_alarm() { snd = new Audio('/images/time_up.mp3'); snd.play(); }
+function find_nearest(address){
+	var geocoder = new google.maps.Geocoder();
+	var sw = new google.maps.LatLng(39.72173,-86.213689);
+	var ne = new google.maps.LatLng(39.819366,-86.104855);
+	var bounds = new google.maps.LatLngBounds(sw, ne);
+	var city = new google.maps.LatLng(39.770565,-86.159272);
+
+	geocoder.geocode( { 'address': address, 'bounds': bounds, 'location': city}, function(results, status) {
+	    if (status == google.maps.GeocoderStatus.OK) {
+	    	var loc = results[0].geometry.location;
+	    	var ltlng = new google.maps.LatLng(loc.k, loc.A);
+			calcRoute(ltlng);
+	 	} else {
+	    	alert('Sorry, could not find that location. ' + status);
+	  	}
+	});
+}
+
+function calcRoute(start) {
+  var end;
+  var min_dist;
+  for(var idx in stations) {
+  	var stat = stations[idx];
+  	var spl = stat[0].split(', ');
+  	var lat = parseFloat(spl[0]);
+  	var lng = parseFloat(spl[1]);
+  	var dist = Math.sqrt(Math.pow(lat - start.lat(), 2) + Math.pow(lng - start.lng(), 2));
+  	if(min_dist == undefined || dist < min_dist) {
+  		min_dist = dist;
+  		end = new google.maps.LatLng(lat, lng);
+  	}
+  }
+  var request = {
+      origin:start,
+      destination:end,
+      travelMode: google.maps.TravelMode.WALKING
+  };
+  directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+
+    }
+  });
+}
+
+function sound_alarm() {  snd.play(); }
 function dismiss_alarm() { snd.pause(); }
 
 function update_timer() {
@@ -82,12 +168,15 @@ function update_timer() {
 }
 
 function scale_to_screen() {
-	$('body').css('width', window.innerWidth + 'px');
+	$('body').css('width', window.innerWidth - 20 + 'px');
 	$('body').css('height', window.innerHeight+ 'px');
 	$('#map').css('width', window.innerWidth - 33 + 'px');
-	$('#map').css('height', window.innerHeight-140+ 'px');
+	$('#map').css('height', window.innerHeight-135+ 'px');
 	$('#station-container').css('width', window.innerWidth + 'px');
 	$('#station-container').css('height', window.innerHeight+ 'px');
+	$('#about-container').css('width', window.innerWidth + 'px');
+	$('#about-container').css('height', window.innerHeight+ 'px');
+	$('#search-container').css('width', window.innerWidth + 'px');
 }
 function load_stations() {
 	stations = [["39.76593, -86.16216", "Convention Center - Maryland and Capitol", "50 S. Capitol Ave.", "Indianapolis", "IN", "46225"],
