@@ -49,6 +49,9 @@ $(function() {
 		$('#about-pane').css('display','block');
 	});
 	$('#nearest').click(function(event) {
+		if(!$('#map-view').hasClass('active')) {
+			$('#map-view').click();
+		}
 		$('#loading-overlay').fadeIn();
 		if(navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
@@ -70,7 +73,10 @@ $(function() {
 		search_active = !search_active;
 	})
 	
-	$('#search-button').click(function() {
+	$('#search-button').click(function() {		
+		if(!$('#map-view').hasClass('active')) {
+			$('#map-view').click();
+		}
 		var query = $('#search-bar').val();
 		if(query.trim() == '') return;
     	
