@@ -32,6 +32,12 @@ html
 								span.docks-available #{stat.docks}
 			div#about-pane
 				div#about-container
+					img#map-img(src='/images/map.png')
+					ol.about-rules-list.white-box About This App
+						li.about-rule This app provides a 30-minute timer for your convenience. It will sound when you have 10, 5, 1, and 0 minutes remaining to remind you to re-dock your bicycle.
+						li.about-rule To find the station nearest to you, press the 'nearest me' button (leftmost) to automatically see a route to it. 
+						li.about-rule If you want to find the closest station to a place other than where you currently are, you can use the 'locate' tab to the left of the timer. This feature works best with landmarks, street-crossings, addresses, etc.
+						li.about-rule If you wish to check the availability of a station, the 'stations' tab shows how many bikes are available in <strong>blue</strong> and how many docks are available in <strong>orange</strong>.
 					img#pricing-img(src='/images/pricing.png')
 					ol.about-rules-list.white-box Getting Started
 						li.about-rule To begin using the bikeshare, you need either a 24-Hour Pass or an Annual Membership. This can only be purchased with a credit or debit card.
@@ -46,11 +52,6 @@ html
 						li.about-rule You must be 18 years of age or older to rent or ride a bicycle.
 						li.about-rule When a bike is checked out, the station will beep for 30 seconds. The bike must be removed from the dock before this time expires or it will become available for rent again.
 						li.about-rule When returning a bike, push it firmly into the station until you hear a beeping sound. If the bike is not pushed in all the way, it will not register with the system and it will still be considered checked out!
-					img#lock-img(src='/images/map.png')
-					ol.about-rules-list.white-box About This App
-						li.about-rule This app provides a 30-minute timer for your convenience. It will sound when you have 10, 5, 1, and 0 minutes remaining to remind you to re-dock your bicycle.
-						li.about-rule This app also provides a service that finds the station nearest to you, and routes you to it automatically. Press the 'route' button to the left of the timer to activate this feature.
-						li.about-rule If you wish to check the availability of a station, the 'stations' tab shows how many bikes are available in blue and how many docks are available in orange.
 			div#search-pane
 				div#search-container.white-box
 					input#search-bar(type="text", placeholder="Lucas Oil, 10th and Senate, etc.")

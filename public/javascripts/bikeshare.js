@@ -137,7 +137,7 @@ function find_nearest(address){
 	    	var ltlng = new google.maps.LatLng(loc.k, loc.A);
 			calcRoute(ltlng);
 	 	} else {
-	    	alert('Sorry, could not find that location. ' + status);
+	    	alert('Sorry, could not find that location. Try being more specific.');
 	  	}
 		$('#loading-overlay').fadeOut();
 	});
