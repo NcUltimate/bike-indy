@@ -1,7 +1,7 @@
 var stations = [];
 var map;
 var timer_active = false;
-var notify_times = [9,4,0,-1];
+var notify_times = [29, 9,4,0,-1];
 var time_mins = 30;
 var time_secs = 0;
 var states = ['start', 'stop', 'reset'];
@@ -49,6 +49,7 @@ $(function() {
 		$('#about-pane').css('display','block');
 	});
 	$('#nearest').click(function(event) {
+		$('#loading-overlay').fadeIn();
 		if(navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var lat = position.coords.latitude;
@@ -74,6 +75,7 @@ $(function() {
 		if(query.trim() == '') return;
     	
 		$('#search').click();
+		$('#loading-overlay').fadeIn();
 		setTimeout(function() {
 			find_nearest(query);	
 		}, 500);
@@ -120,6 +122,7 @@ function find_nearest(address){
 	 	} else {
 	    	alert('Sorry, could not find that location. ' + status);
 	  	}
+		$('#loading-overlay').fadeOut();
 	});
 }
 
@@ -166,7 +169,7 @@ function update_timer() {
 			return;
 		}
 	}
-	$('#timer .glyphicon').html((time_mins < 10 ? '0' : '') + time_mins + ':'+(time_secs < 10 ? '0' : '')+time_secs);
+	$('#timer .time-text').html((time_mins < 10 ? '0' : '') + time_mins + ':'+(time_secs < 10 ? '0' : '')+time_secs);
 }
 
 function scale_to_screen() {
