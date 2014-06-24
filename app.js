@@ -54,10 +54,8 @@ app.use(function(err, req, res, next) {
         message: err.message,
         error: {}
     });
-});
-app.get('/', function(req, res) {
-    res.render('index', {'title': 'About'});
-});
+}); 
+
 var server = app.listen(app.get('port'), function() {
     console.log('listening on port', app.get('port'));
 });

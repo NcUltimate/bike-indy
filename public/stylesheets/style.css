@@ -47,9 +47,14 @@ body {
 	width: 15px;
 }
 #timer {
+	transition: all 0.5s;
 	position: relative;
 	text-align: center;
 	color: #444;
+}
+#timer.alarming {
+	color: white;
+	background: #66cc22;
 }
 #timer .time-text {
 	line-height: 20px;

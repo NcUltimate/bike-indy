@@ -22,6 +22,14 @@ html
 						img(src="/images/loading.gif")
 			div#station-pane
 				div#station-container
+					each stat, i in stations
+						div.station(data-station=stat)
+							span.station-header
+								span.station-title #{stat.name}
+								span.station-address #{stat.address}
+							span.station-availability
+								span.bikes-available #{stat.bikes}
+								span.docks-available #{stat.docks}
 			div#about-pane
 				div#about-container
 					img#pricing-img(src='/images/pricing.png')
