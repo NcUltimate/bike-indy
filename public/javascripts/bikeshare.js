@@ -72,9 +72,11 @@ $(function() {
 	$('#search-button').click(function() {
 		var query = $('#search-bar').val();
 		if(query.trim() == '') return;
-
-		find_nearest(query);	    	
+    	
 		$('#search').click();
+		setTimeout(function() {
+			find_nearest(query);	
+		}, 500);
 	});
 
 	$(window).on('resize', function() {
