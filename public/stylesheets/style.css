@@ -166,7 +166,7 @@ body {
 	color: white;
 	width: 60%;
 	text-shadow: 0px 1px 1px black;
-	font-size: 12px;
+	font-size: 14px;
 	display: block;
 }
 .station-header .station-address {
@@ -280,4 +280,17 @@ img#map-img {
 	position: absolute;
 	left: 45%;
 	top: 35%;
+}
+.close-button {
+	position: absolute;
+	background: rgba(255,255,255,0.8);
+	border-radius: 15px;
+	right: -10px;
+	top: -10px;
+}
+.station-overlay {
+	display: none;
+	position: fixed;
+	left: 0px;
+	top: 60px;
 }

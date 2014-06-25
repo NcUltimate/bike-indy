@@ -23,7 +23,7 @@ html
 			div#station-pane
 				div#station-container
 					each stat, i in stations
-						div.station(data-station=stat)
+						div.station(id='station-'+i, data-station=stat)
 							span.station-header
 								span.station-title #{stat.name}
 								span.station-address #{stat.address}
