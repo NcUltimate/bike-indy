@@ -283,7 +283,7 @@ img#map-img {
 }
 .close-button {
 	position: absolute;
-	background: rgba(255,255,255,0.8);
+	background: white;
 	border-radius: 15px;
 	right: -10px;
 	top: -10px;

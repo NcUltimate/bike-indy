@@ -71,21 +71,14 @@ $(function() {
 			$('#search-container').slideDown(300);
 		}
 		search_active = !search_active;
-	})
-	
-	$('#search-button').click(function() {		
-		if(!$('#map-view').hasClass('active')) {
-			$('#map-view').click();
-		}
-		var query = $('#search-bar').val();
-		if(query.trim() == '') return;
-    	
-		$('#search').click();
-		$('#loading-overlay').fadeIn();
-		setTimeout(function() {
-			find_nearest(query);	
-		}, 500);
 	});
+
+	$('#search-container').on('submit', function(e) {
+		e.preventDefault();
+		search_click();
+	});
+	
+	$('#search-button').click(search_click);
 
 	$(window).on('resize', function() {
 		scale_to_screen();
@@ -123,6 +116,17 @@ $(function() {
 	});
 
 });
+function search_click() {		
+	if(!$('#map-view').hasClass('active')) {
+		$('#map-view').click();
+	}
+	var query = $('#search-bar').val();
+	if(query.trim() == '') return;
+    	
+	$('#search').click();
+	$('#loading-overlay').fadeIn();
+	find_station_by(query);	
+}
 
 function find_station_by(address){
 	var geocoder = new google.maps.Geocoder();
@@ -161,7 +165,8 @@ function closest_to(pt) {
 	return [end, min_dist, index];
 }
 function calcRoute(start) {
-  var end = closest_to(start)[0];
+  var closest = closest_to(start);
+	var end = closest[0];
   var request = {
       origin:start,
       destination:end,
@@ -170,6 +175,7 @@ function calcRoute(start) {
   directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK) {
       directionsDisplay.setDirections(response);
+			display_station_overlay(closest);
     }
   });
 }
@@ -227,6 +233,27 @@ function load_stations() {
 		stations.push(lat+', '+lng);
 	}
 }
+function display_station_overlay(stat) {
+	var close_img = $('<img>').attr({'src':'/images/close.png', 'width':'30px', 'height':'30px'});
+	var station = $('#station-'+stat[2]).clone();
+
+	close_img.addClass('close-button');
+	station.css('width', screen.width - 15+'px');
+	station.addClass('station-overlay');
+	station.append(close_img);
+
+	$('#map-pane .station').remove();
+	$('#map-pane').append(station);
+
+	$('.close-button').click(function() {
+			$('#map-pane .station').slideUp(100);
+			setTimeout(function() {
+				$('#map-pane .station').remove();
+			}, 200);
+	});
+
+	station.slideDown(100);
+}
 function add_station_markers(map) {
 	for(var idx in stations) {
 		var location = stations[idx].split(', ');
@@ -238,26 +265,8 @@ function add_station_markers(map) {
 								scaledSize: new google.maps.Size(30,30)};
 		var marker = new google.maps.Marker({position: latLng, map: map, title: "Station "+idx, icon: image});
 		google.maps.event.addListener(marker, 'click', function(event) {
-			var close_img = $('<img>').attr({'src':'/images/close.png', 'width':'30px', 'height':'30px'});
 			var nearest = closest_to(event.latLng);
-			var station = $('#station-'+nearest[2]).clone();
-
-			close_img.addClass('close-button');
-			station.css('width', screen.width - 15+'px');
-			station.addClass('station-overlay');
-			station.append(close_img);
-
-			$('#map-pane .station').remove();
-			$('#map-pane').append(station);
-
-			$('.close-button').click(function() {
-					$('#map-pane .station').slideUp(100);
-					setTimeout(function() {
-						$('#map-pane .station').remove();
-					}, 200);
-			});
-
-			station.slideDown(100);
+			display_station_overlay(nearest);
 		});
 	}
 }
