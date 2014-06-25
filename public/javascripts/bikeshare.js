@@ -49,9 +49,7 @@ $(function() {
 		$('#about-pane').css('display','block');
 	});
 	$('#nearest').click(function(event) {
-		if(!$('#map-view').hasClass('active')) {
-			$('#map-view').click();
-		}
+		force_map();
 		$('#loading-overlay').fadeIn();
 		if(navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
@@ -79,6 +77,18 @@ $(function() {
 	});
 	
 	$('#search-button').click(search_click);
+	$('#station-pane .station').click(function(e) {
+			var station = $(e.currentTarget).clone();
+			force_map();
+			display_station_overlay(station);		
+
+			var sdata = station.data('station');
+			var lat = sdata.lat;
+			var lng = sdata.lng;
+			var center = new google.maps.LatLng(lat, lng);
+			map.setCenter(center);
+			map.setZoom(18);
+	});
 
 	$(window).on('resize', function() {
 		scale_to_screen();
@@ -116,13 +126,16 @@ $(function() {
 	});
 
 });
-function search_click() {		
+function force_map() {
 	if(!$('#map-view').hasClass('active')) {
 		$('#map-view').click();
 	}
+}
+function search_click() {		
 	var query = $('#search-bar').val();
 	if(query.trim() == '') return;
     	
+	force_map();
 	$('#search').click();
 	$('#loading-overlay').fadeIn();
 	find_station_by(query);	
@@ -175,7 +188,9 @@ function calcRoute(start) {
   directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK) {
       directionsDisplay.setDirections(response);
-			display_station_overlay(closest);
+
+			var station = $('#station-'+closest[2]).clone();
+			display_station_overlay(station);
     }
   });
 }
@@ -233,9 +248,8 @@ function load_stations() {
 		stations.push(lat+', '+lng);
 	}
 }
-function display_station_overlay(stat) {
+function display_station_overlay(station) {
 	var close_img = $('<img>').attr({'src':'/images/close.png', 'width':'30px', 'height':'30px'});
-	var station = $('#station-'+stat[2]).clone();
 
 	close_img.addClass('close-button');
 	station.css('width', screen.width - 15+'px');
@@ -266,7 +280,8 @@ function add_station_markers(map) {
 		var marker = new google.maps.Marker({position: latLng, map: map, title: "Station "+idx, icon: image});
 		google.maps.event.addListener(marker, 'click', function(event) {
 			var nearest = closest_to(event.latLng);
-			display_station_overlay(nearest);
+			var station = $('#station-'+nearest[2]).clone();
+			display_station_overlay(station);
 		});
 	}
 }
