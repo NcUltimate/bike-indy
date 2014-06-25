@@ -252,7 +252,7 @@ function display_station_overlay(station) {
 	var close_img = $('<img>').attr({'src':'/images/close.png', 'width':'30px', 'height':'30px'});
 
 	close_img.addClass('close-button');
-	station.css('width', screen.width - 15+'px');
+	station.css('width', window.innerWidth - 15+'px');
 	station.addClass('station-overlay');
 	station.append(close_img);
 
