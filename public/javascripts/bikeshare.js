@@ -12,10 +12,12 @@ var state = 0;
 
 var search_active = false;
 var directionsDisplay;
+var geocoder;
 var directionsService = new google.maps.DirectionsService()
+var indy = new google.maps.LatLng(39.770565,-86.159272);
 
 $(function() {
-	var ops = { center: new google.maps.LatLng(39.770565,-86.159272), zoom: 14, mapTypeControl: false};
+	var ops = { center: indy, zoom: 14, mapTypeControl: false};
 	map = new google.maps.Map(document.getElementById("map"), ops);
 	directionsDisplay = new google.maps.DirectionsRenderer()
 	directionsDisplay.setMap(map);
@@ -51,6 +53,7 @@ $(function() {
 	$('#nearest').click(function(event) {
 		force_map();
 		$('#loading-overlay').fadeIn();
+		console.log('oops!');
 		if(navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var lat = position.coords.latitude;
@@ -142,17 +145,18 @@ function search_click() {
 }
 
 function find_station_by(address){
-	var geocoder = new google.maps.Geocoder();
+	console.log(address);
+	geocoder = new google.maps.Geocoder();
 	var sw = new google.maps.LatLng(39.72173,-86.213689);
 	var ne = new google.maps.LatLng(39.819366,-86.104855);
 	var bounds = new google.maps.LatLngBounds(sw, ne);
-	var city = new google.maps.LatLng(39.770565,-86.159272);
 
-	geocoder.geocode( { 'address': address, 'bounds': bounds, 'location': city}, function(results, status) {
+	geocoder.geocode( { 'address': address, 'bounds': bounds, 'location': indy}, function(results, status) {
 	    if (status == google.maps.GeocoderStatus.OK) {
 	    	var loc = results[0].geometry.location;
 	    	var ltlng = new google.maps.LatLng(loc.k, loc.A);
-			calcRoute(ltlng);
+				console.log(results[0]);
+				calcRoute(ltlng);
 	 	} else {
 	    	alert('Sorry, could not find that location. Try being more specific.');
 	  	}

@@ -15,9 +15,10 @@ router.get('/', function(req, res) {
      	for(var idx in split) {
      		var idxn = parseInt(idx);
      		var idxn2 = idxn+1;
-     		if(split[idx].indexOf('var point = new google.maps.LatLng') != -1) {
+				var point_idx = split[idx].indexOf('var point = new google.maps.LatLng');  
+     		if(point_idx != -1) {
      			var latlng_reg = /\([0-9]+\.[0-9]+, [0-9\-]+\.[0-9]+\)/;
-     			var match = latlng_reg.exec(split[idx]);
+     			var match = latlng_reg.exec(split[idx].substring(point_idx, split[idx].length-1));
      			if(match != null) {
 	     			var coord_split = match.toString().split(', ');
 	     			var lat = coord_split[0].substring(1);
