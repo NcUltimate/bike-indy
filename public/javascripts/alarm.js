@@ -1,69 +1,66 @@
-var timer_active = false;
-var notify_times = [9,4,0,-1];
-var time_mins = 30;
-var time_secs = 0;
-var states = ['start', 'stop', 'reset', 'dismiss'];
-var snd = snd = new Audio('/images/time_up.mp3');
-var ticker;
-var alarming;
-var state = 0;
+var Alarm = {
+	states: ['start', 'stop', 'reset', 'dismiss'],
+	snd: new Audio('/images/time_up.mp3'),
+	timer_active: false,
+	notify_times: [9,4,0,-1],
+	time_mins: 30, time_secs: 0, state: 0,
 
-$(function() {
-	$('#timer').click(function() {
-		if(state == 0) {
-			ticker = setInterval(update_timer, 1000);
+	initialize: function() {
+		$('#timer').click(function() {
+			if(Alarm.state == 0) {
+				Alarm.ticker = setInterval(Alarm.update_timer, 1000);
+			}
+			else if(Alarm.state == 1) {
+				clearInterval(Alarm.ticker);
+				Alarm.dismiss_alarm();
+			}
+			else if(Alarm.state == 2){
+				Alarm.time_mins = 30;
+				Alarm.time_secs = 1;
+				Alarm.update_timer();
+			}
+			else if(Alarm.state == 3) {
+				Alarm.dismiss_alarm();
+			}
+			if(Alarm.state != 3) {
+				Alarm.state += 1;
+				Alarm.state %= 3;
+			}
+			else {
+				if(Alarm.time_mins == -1)
+					Alarm.state = 2;
+				else
+					Alarm.state = 1;
+			}
+			$('#timer .msg-text').html('Tap to '+Alarm.states[Alarm.state]);
+		});
+	},
+	sound_alarm: function() {  
+		Alarm.snd.play(); 
+		Alarm.alarming = setInterval(function() {
+			$('#timer').toggleClass('alarming');
+		}, 800);
+	},
+	dismiss_alarm: function() { 
+		Alarm.snd.pause(); 
+		clearInterval(Alarm.alarming);
+		$('#timer').removeClass('alarming');
+	},
+	update_timer: function() {
+		Alarm.time_secs--;
+		if(Alarm.time_secs == -1) {
+			Alarm.time_secs = 59;
+			Alarm.time_mins--;
+			if(Alarm.notify_times.indexOf(Alarm.time_mins) != -1) {
+				Alarm.state = 3;
+				$('#timer .msg-text').html('Tap to '+Alarm.states[Alarm.state]);
+				Alarm.sound_alarm();
+			}
+			if(Alarm.time_mins == -1) {
+				clearInterval(Alarm.ticker);
+				return;
+			}
 		}
-		else if(state == 1) {
-			clearInterval(ticker);
-			dismiss_alarm();
-		}
-		else if(state == 2){
-			time_mins = 30;
-			time_secs = 1;
-			update_timer();
-		}
-		else if(state == 3) {
-			dismiss_alarm();
-		}
-		if(state != 3) {
-			state += 1;
-			state %= 3;
-		}
-		else {
-			if(time_mins == -1)
-				state = 2;
-			else
-				state = 1;
-		}
-		$('#timer .msg-text').html('Tap to '+states[state]);
-	});
-});
-function sound_alarm() {  
-	snd.play(); 
-	alarming = setInterval(function() {
-		$('#timer').toggleClass('alarming');
-	}, 800);
-}
-function dismiss_alarm() { 
-	snd.pause(); 
-	clearInterval(alarming);
-	$('#timer').removeClass('alarming');
-}
-
-function update_timer() {
-	time_secs--;
-	if(time_secs == -1) {
-		time_secs = 59;
-		time_mins--;
-		if(notify_times.indexOf(time_mins) != -1) {
-			state = 3;
-			$('#timer .msg-text').html('Tap to '+states[state]);
-			sound_alarm();
-		}
-		if(time_mins == -1) {
-			clearInterval(ticker);
-			return;
-		}
+		$('#timer .time-text').html((Alarm.time_mins < 10 ? '0' : '') + Alarm.time_mins + ':'+(Alarm.time_secs < 10 ? '0' : '')+Alarm.time_secs);
 	}
-	$('#timer .time-text').html((time_mins < 10 ? '0' : '') + time_mins + ':'+(time_secs < 10 ? '0' : '')+time_secs);
-}
+};
