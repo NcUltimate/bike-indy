@@ -35,7 +35,7 @@ router.get('/', function(req, res) {
      		}
      	}
      	saved.sort(function(a,b) { return ( a['name'] <  b['name'] ? -1 : (a['name'] > b['name'] ? 1 : 0)); });
-  		res.render('index', { title: 'Express' , stations: saved});
+  		res.render('index', { title: 'Pacers Bikeshare' , stations: saved});
  	});
 });
 
