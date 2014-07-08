@@ -57,18 +57,21 @@ var Alarm = {
 		var mins = Math.floor( time / 60 );
 		time -= mins * 60;
 		var secs = time;
+		mins = Math.max(mins, 0);
+		secs = Math.max(secs, 0);
 		return (mins < 10 ? '0' : '')+mins+":"+(secs < 10 ? '0' : '')+secs;
 	},
 	update_timer: function() {
 		Alarm.elapsed = Math.floor(Date.now()/1000) - Alarm.start_time;
 		$('#timer .time-text').html(Alarm.format(Alarm.time_up-Alarm.elapsed));
 
-		if(Alarm.notify_times.indexOf(Alarm.elapsed) != -1) {
+		if(Alarm.notify_times.indexOf(Alarm.elapsed) != -1
+			|| Alarm.elapsed >= Alarm.time_up) {
 			Alarm.state = 3;
 			$('#timer .msg-text').html('Tap to '+Alarm.states[Alarm.state]);
 			if(!Alarm.sounding) Alarm.sound_alarm();
 		}
-		if(Alarm.elapsed == Alarm.time_up) {
+		if(Alarm.elapsed >= Alarm.time_up) {
 			clearInterval(Alarm.ticker);
 			return;
 		}
