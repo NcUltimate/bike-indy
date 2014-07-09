@@ -137,13 +137,13 @@ var BikeShare = {
 		station.addClass('station-overlay');
 		station.append(close_img);
 
-		$('#map-pane .station').remove();
-		$('#map-pane').append(station);
+		$('#map-container .station').remove();
+		$('#map-container').append(station);
 
 		$('.close-button').click(function() {
-				$('#map-pane .station').slideUp(100);
+				$('#map-container .station').slideUp(100);
 				setTimeout(function() {
-					$('#map-pane .station').remove();
+					$('#map-container .station').remove();
 				}, 200);
 		});
 

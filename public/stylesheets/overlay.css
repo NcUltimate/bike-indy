@@ -24,7 +24,7 @@
 }
 .station-overlay {
 	display: none;
-	position: fixed;
-	left: -10px;
-	top: 60px;
+	position: absolute!important;
+	left: 0px;
+	top: 55px;
 }
