@@ -29,7 +29,7 @@ block content
 					img(id=rule.img_id, src='/images/'+rule.img_src)
 					ol.about-rules-list.white-box #{rule.title}
 						each li in rule.rules
-							li.about-rule #{li}
+							li.about-rule!= li
 		div#search-pane
 			form#search-container.white-box
 				input#search-bar(type="text", placeholder="Lucas Oil, 10th and Senate, etc.")
