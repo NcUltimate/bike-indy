@@ -92,10 +92,17 @@ var BikeShare = {
 			$('#search-container').slideDown(300);
 		BikeShare.search_active = !BikeShare.search_active;
 	},
+	timeout: function() {
+		alert('Location timed out. Please ensure that your device has location services on, and is set to high accuracy mode.');
+		BikeShare.timeout_active = undefined;
+		$('#loading-overlay').fadeOut();
+	},
 	nearest_to_me: function(event) {
 		BikeShare.force_map();
 		$('#loading-overlay').fadeIn();
 		if(navigator.geolocation) {
+			if(!BikeShare.timeout_active)
+				BikeShare.timeout_active = setTimeout(BikeShare.timeout, 10000);
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var lat = position.coords.latitude;
 				var lng = position.coords.longitude;
