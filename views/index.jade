@@ -9,12 +9,12 @@ block content
 			span#station-view.nav-button Stations
 			span#about-view.nav-button About
 		div#map-pane
-			div#map-container
+			div#map-container.container
 				div#map.white-box
 				div#loading-overlay
 					img(src="/images/loading.gif")
 		div#station-pane
-			div#station-container
+			div#station-container.container
 				each stat, i in stations
 					div.station(id='station-'+i, data-station=stat, style="background: url('/images/static_maps/"+stat.id+".png') 0;")
 						span.station-header
@@ -23,14 +23,8 @@ block content
 						span.station-availability
 							span.bikes-available #{stat.bikes}
 							span.docks-available #{stat.docks}
-						-function img_str(lat, lng) {
-						-	var clat = parseFloat(lat) + 0.0001;
-						-	var clng = parseFloat(lng) + 0.0001;
-						-	var map = "http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCq0rYM7CdDmbBfHgrGT5_1kUwBPjnYlQU";
-						-     return map+"&name="+stat.name+"&size=400x120&center="+clat+","+clng+"&maptype=satellite&zoom=17";
-						-}
 		div#about-pane
-			div#about-container
+			div#about-container.container
 				each rule in rules
 					img(id=rule.img_id, src='/images/'+rule.img_src)
 					ol.about-rules-list.white-box #{rule.title}

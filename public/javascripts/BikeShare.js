@@ -117,7 +117,7 @@ var BikeShare = {
 		$('#search-container').css('width', window.innerWidth + 'px');
 		$('#loading-overlay img').css('left', window.innerWidth /2 - 15 + 'px');
 		$('#loading-overlay img').css('top', 40*window.innerHeight/100 + 'px');
-		$('#map-pane .station').css('width', window.innerWidth - 10+'px');
+		$('#map-container .station').css('width', window.innerWidth - 10+'px');
 	},
 	load_stations: function() {
 		var $stations = $('.station');

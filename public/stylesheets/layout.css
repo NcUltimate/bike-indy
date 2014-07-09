@@ -13,9 +13,23 @@ body {
 	padding: 15px;
 }
 
+.container {
+	max-width: 1000px;
+	margin: auto;
+}
+@media(min-width: 1000px) {
+	.container {
+		position: relative!important;
+	}
+	#map-container .station {
+
+		max-width: 1000px;
+	}
+}
 /*************** FOOTER BUTTONS ****************/
 .footer-button {
 	display: inline-block;
+	cursor: pointer;
 	padding: 10px 0px;
 	width: 33%;
 	height: 30px;
@@ -100,19 +114,22 @@ body {
 	left: 0px;
 	top: 0px;
 	z-index: 5;
+	text-align: right;
 }
 .nav-button {
 	display: inline-block;
+	cursor: pointer;
 	width: 24%;
 	height: 39px;
 	text-align: center;
 	font-family: sans-serif;
 	font-size: 14px;
-	border-right: 1px solid #eee;
+	border-left: 1px solid #eee;
 	color: #555;
 	line-height: 30px;
 	transition: all 0.2s;
 	vertical-align: top;
+	max-width: 200px;
 }
 .nav-button img {
 	margin-top: -15px;
@@ -120,9 +137,12 @@ body {
 }
 #navbar .nav-button:first-of-type {
 	text-align: left;
+	float: left;
+	border: none;
+	margin-left: -10px;
 }
-.nav-button:last-of-type {
-	border:none;
+#about-view {
+	margin-right: 16px;
 }
 .nav-button:nth-of-type(2).active {
 	border-bottom: 3px solid blue;
