@@ -93,9 +93,11 @@ var BikeShare = {
 		BikeShare.search_active = !BikeShare.search_active;
 	},
 	timeout: function() {
-		alert('Location timed out. Please ensure that your device has location services on, and is set to high accuracy mode.');
+		if($('#loading-overlay').css('display') != 'none') {
+			alert('Location timed out. Please turn on location services in high accuracy mode to use this feature.');
+			$('#loading-overlay').fadeOut();
+		}
 		BikeShare.timeout_active = undefined;
-		$('#loading-overlay').fadeOut();
 	},
 	nearest_to_me: function(event) {
 		BikeShare.force_map();
