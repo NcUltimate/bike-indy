@@ -8,9 +8,7 @@ var Geocoder = {
 
 		Geocoder.geocoder.geocode( ops , function(results, status) {
 		    if (status == google.maps.GeocoderStatus.OK) {
-		    	var loc = results[0].geometry.location;
-		    	var ltlng = new google.maps.LatLng(loc.k, loc.A);
-				Geocoder.calc_route(ltlng);
+				Geocoder.calc_route(results[0].geometry.location);
 		 	} else {
 		    	alert('Sorry, could not find that location. Try being more specific.');
 		  	}
