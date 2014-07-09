@@ -1,0 +1,27 @@
+/******************* SEARCH PANE ************************/
+#search-container {
+	display: none;
+	position: fixed;
+	left: 0px;
+	bottom: 50px;
+	padding: 5px;
+}
+#search-bar {
+	width: 75%;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	font-size: 14px;
+}
+#search-button {
+	width: 15%;
+	text-align: center;
+	font-size: 30px;
+	vertical-align: middle;
+	color: #333;
+	display: inline-block;
+}
+#search-button.ui-selecting {
+	background: #ccc;
+	color: white;
+}

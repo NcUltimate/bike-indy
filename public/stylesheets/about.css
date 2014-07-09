@@ -1,0 +1,32 @@
+/******************** ABOUT PANE **********************/
+#about-pane {
+	display: none;
+}
+#about-container {
+	text-align: center;
+	overflow: scroll;
+	height: 100%;
+	position: fixed;
+	left: 0px;
+	top: 0px;
+}
+ol.about-rules-list {
+	font-size: 16px;
+	text-align: left;
+	margin-top: -10px;
+}
+ol.about-rules-list:last-of-type {
+	margin-bottom: 65px;
+}
+li.about-rule {
+	margin-left: 35px;
+	font-size: 12px;
+	padding: 5px;
+}
+#about-pane img {
+	border: 1px solid white;
+	width: 100%;
+}
+img#map-img {
+	margin-top: 75px;
+}
