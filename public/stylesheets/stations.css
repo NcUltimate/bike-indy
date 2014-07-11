@@ -72,6 +72,14 @@
 	line-height: 60px;
 	text-align: center;
 	font-size: 24px;
+	position: relative;
+}
+.station-availability .subtitle {
+	font-size: 9px;
+	position: absolute;
+	left: 0px;
+	bottom: -20px;
+	color: #999;
 }
 .station-availability .bikes-available {
 	border-top: 4px solid #3388ee;

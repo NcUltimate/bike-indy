@@ -21,8 +21,12 @@ block content
 							span.station-title #{stat.name}
 							span.station-address #{stat.address}
 						span.station-availability
-							span.bikes-available #{stat.bikes}
-							span.docks-available #{stat.docks}
+							span.bikes-available 
+								span #{stat.bikes}
+								span.subtitle #{stat.bikes == 1 ? 'bike' : 'bikes' }
+							span.docks-available 
+								span #{stat.docks}
+								span.subtitle #{stat.docks == 1 ? 'dock' : 'docks' }
 		div#about-pane
 			div#about-container.container
 				each rule in rules
