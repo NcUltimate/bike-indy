@@ -6,7 +6,7 @@ var cheerio = require('cheerio');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-     request('https://www.pacersbikeshare.org/header-nav/station-map/', function(error, resp, body){
+     request('https://www.pacersbikeshare.org', function(error, resp, body){
           var stations = loadStationInfo(body);
           var rules = getAboutRules();
           res.render('index', { title: 'Pacers Bikeshare' , stations: stations, rules: rules});
