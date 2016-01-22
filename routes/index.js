@@ -22,34 +22,49 @@ function img_str(lat, lng) {
      return map+"&name="+stat.name+"&size=400x120&center="+clat+","+clng+"&maptype=satellite&zoom=17";
 }
 */
+function getLatLng(str) {
+  var latlng_reg = /([0-9]+\.[0-9]+), ([0-9\-]+\.[0-9]+)/;
+  var point = latlng_reg.exec(str);
+
+  if(point == null) return [];
+  
+  return [point[1], point[2]];
+}
+function getMarkerText(str) {
+  var text_reg  = /createMarker\(point, "(.+)",/;
+  var marker    = text_reg.exec(str)
+
+  if(marker == null) return '';
+
+  return marker[1];
+}
+function idFromName(name){
+  name.split(/[\' \-\.]/).join('').toLowerCase();
+}
 function loadStationInfo(body) {
      $ = cheerio.load(body);
-     var script = $('script:last-of-type').text();
-     var split = script.split(/<.+?>/);
      var saved = [];
-     var built = {};
+     var script = $('script:last-of-type').text();
+     var split = script.split(/var icon =/);
      for(var idx in split) {
-          var idxn = parseInt(idx);
-          var idxn2 = idxn+1;
-               var point_idx = split[idx].indexOf('var point = new google.maps.LatLng');  
-          if(point_idx != -1) {
-               var latlng_reg = /\([0-9]+\.[0-9]+, [0-9\-]+\.[0-9]+\)/;
-               var match = latlng_reg.exec(split[idx].substring(point_idx, split[idx].length-1));
-               if(match != null) {
-                    var coord_split = match.toString().split(', ');
-                    var lat = coord_split[0].substring(1);
-                    var lng = coord_split[1].substring(0, coord_split[1].length - 1);
-                    built['lat'] = lat;
-                    built['lng'] = lng;
-                    built['name'] = split[idxn+2];
-                    built['id'] = built['name'].split(/[\' \-\.]/).join('').toLowerCase();
-                    built['address'] = split[idxn+4];
-                    built['bikes'] = split[idxn + 9];
-                    built['docks'] = split[idxn + 12];
-                    saved.push(built);
-                    built = {};
-               }
+        var station = split[idx].split("\n")
+        var latLng  = getLatLng(station[2]);
+        if(latLng == []) continue;
+
+        var marker  = getMarkerText(station[4])
+        if(marker == '') continue;
+
+        saved.push(
+          {
+            'lat'     : latLng[0],
+            'lng'     : latLng[1],
+            'name'    : marker[2],
+            'id'      : idFromName(marker[2]),
+            'address' : marker[9],
+            'bikes'   : marker[14],
+            'docks'   : marker[18]
           }
+        )
      }
      saved.sort(function(a,b) { return ( a['name'] <  b['name'] ? -1 : (a['name'] > b['name'] ? 1 : 0)); });
      return saved;
