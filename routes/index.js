@@ -39,7 +39,18 @@ function getMarkerText(str) {
   return marker[1];
 }
 function idFromName(name){
-  name.split(/[\' \-\.]/).join('').toLowerCase();
+  return name.split(/[\' \-\.]/).join('').toLowerCase();
+}
+function stationData(latLng, marker) {
+  return {
+    'lat'     : latLng[0],
+    'lng'     : latLng[1],
+    'name'    : marker[2],
+    'id'      : idFromName(marker[2]),
+    'address' : marker[9],
+    'bikes'   : marker[14],
+    'docks'   : marker[18]
+  }
 }
 function loadStationInfo(body) {
      $ = cheerio.load(body);
@@ -51,20 +62,13 @@ function loadStationInfo(body) {
         var latLng  = getLatLng(station[2]);
         if(latLng == []) continue;
 
-        var marker  = getMarkerText(station[4])
-        if(marker == '') continue;
+        var markerText  = getMarkerText(station[4])
+        if(markerText == '') continue;
 
-        saved.push(
-          {
-            'lat'     : latLng[0],
-            'lng'     : latLng[1],
-            'name'    : marker[2],
-            'id'      : idFromName(marker[2]),
-            'address' : marker[9],
-            'bikes'   : marker[14],
-            'docks'   : marker[18]
-          }
-        )
+        var marker = markerText.split(/<.+?>/)
+        var data = stationData(latLng, marker);
+        console.log(data);
+        saved.push(data)
      }
      saved.sort(function(a,b) { return ( a['name'] <  b['name'] ? -1 : (a['name'] > b['name'] ? 1 : 0)); });
      return saved;
